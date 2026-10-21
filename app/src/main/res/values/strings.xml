@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PantryNerd</string>
+    <string name="title_add_ingredient">Add Ingredient</string>
+    <string name="title_edit_ingredient">Edit Ingredient</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_invalid_quantity">Enter a valid quantity greater than 0</string>
 </resources>
