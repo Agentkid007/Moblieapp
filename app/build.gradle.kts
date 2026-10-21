@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+layout.buildDirectory.set(file("C:/PantryNerdBuild/app"))
+
 android {
     namespace = "com.example.pantrynerd"
     compileSdk {
