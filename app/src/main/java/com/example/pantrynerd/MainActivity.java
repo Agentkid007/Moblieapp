@@ -1,12 +1,14 @@
 package com.example.pantrynerd;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
     // it inflates the layout, finds the views, sets the RecyclerView layout manager and sets up the bottom navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply saved dark mode preference before super.onCreate/setContentView
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
+        if (prefs.contains(SettingsActivity.KEY_DARK_MODE)) {
+            boolean darkMode = prefs.getBoolean(SettingsActivity.KEY_DARK_MODE, false);
+            AppCompatDelegate.setDefaultNightMode(
+                    darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+            );
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

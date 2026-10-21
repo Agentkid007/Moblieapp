@@ -29,6 +29,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Expiry Alerts Enabled"
+            android:layout_marginBottom="16dp"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/darkModeSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"
             android:layout_marginBottom="24dp"
             android:textSize="16sp" />
 

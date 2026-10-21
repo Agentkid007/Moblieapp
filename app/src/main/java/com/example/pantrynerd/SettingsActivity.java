@@ -7,6 +7,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 //the settings page which switches off the expiry alerts and changes the unit system to
@@ -19,9 +20,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "PantryNerdPreferences";
     public static final String KEY_EXPIRY_ALERTS = "expiry_alerts_enabled";
+    public static final String KEY_DARK_MODE = "dark_mode_enabled";
     public static final String KEY_UNIT_SYSTEM = "unit_system"; // metric or imperial
 
     private Switch alertsSwitch;
+    private Switch darkModeSwitch;
     private RadioGroup unitRadioGroup;
 
     @Override
@@ -39,16 +42,22 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         alertsSwitch = findViewById(R.id.alertsSwitch);
+        darkModeSwitch = findViewById(R.id.darkModeSwitch);
         unitRadioGroup = findViewById(R.id.unitRadioGroup);
 
         //sets each widget to whatever was last saved before attaching listeners
-
         loadPreferences();
 
         //all changes will be saved to SharedPreferences directly
-
         alertsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
                 getPreferences().edit().putBoolean(KEY_EXPIRY_ALERTS, isChecked).apply());
+
+        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            getPreferences().edit().putBoolean(KEY_DARK_MODE, isChecked).apply();
+            AppCompatDelegate.setDefaultNightMode(
+                    isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+            );
+        });
 
         unitRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             String unitSystem = checkedId == R.id.imperialRadioButton ? "imperial" : "metric";
@@ -63,6 +72,11 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getPreferences();
         boolean alertsEnabled = sharedPreferences.getBoolean(KEY_EXPIRY_ALERTS, true);
         alertsSwitch.setChecked(alertsEnabled);
+
+        boolean darkModeEnabled = sharedPreferences.getBoolean(KEY_DARK_MODE,
+                (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                        == android.content.res.Configuration.UI_MODE_NIGHT_YES);
+        darkModeSwitch.setChecked(darkModeEnabled);
 
         String unitSystem = sharedPreferences.getString(KEY_UNIT_SYSTEM, "metric");
         if ("imperial".equals(unitSystem)) {
